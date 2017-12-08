@@ -21,8 +21,10 @@ class PledgeTest < ActiveSupport::TestCase
     project.save
     pledge = Pledge.new(dollar_amount: 3.00, project: project)
     pledge.user = owner
-    pledge.save
-    assert pledge.invalid?, 'Owner should not be able to pledge towards own project'
+    # pledge.save
+    refute pledge.save
+    assert !pledge.save
+    assert_equal false, pledge.save
   end
 
   def new_project
