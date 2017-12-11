@@ -24,7 +24,14 @@ class ProjectsController < ApplicationController
     @project.end_date = params[:project][:end_date]
     @project.image = params[:project][:image]
     @project.user = current_user
-    @project.category_ids = params[:project][:category_id]
+    categories = params[:project][:category_ids]
+    categories.delete("")
+    
+    categories.each do |id|
+      @project.categories << Category.find_by(id: id.to_i)
+    end
+
+
     if @project.save
       redirect_to projects_url
     else
