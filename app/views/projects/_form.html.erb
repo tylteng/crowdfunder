@@ -1,4 +1,7 @@
 <%= form_for(@project, html: {multipart: true}) do |f| %>
+
+<%= render partial: "shared/errors", locals: { errors: @project.errors }  %>
+
   <div>
     <%= f.label :title %>
     <%= f.text_field :title %>
@@ -10,12 +13,17 @@
   </div>
 
   <div>
+    <%= f.label :category %><br>
+    <%= f.collection_check_boxes :category_ids, Category.all, :id, :name%>
+  </div>
+
+  <div>
     <%= f.label :goal %>
     <%= f.number_field :goal %>
   </div>
 
   <div>
-    <%= f.label :image %>
+    <%= f.label :image %><br>
     <%= f.text_field :image %>
   </div>
 

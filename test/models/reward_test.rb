@@ -1,5 +1,6 @@
 require 'test_helper'
 
+
 class RewardTest < ActiveSupport::TestCase
 
   test 'A reward can be created' do
