@@ -5,6 +5,7 @@ class Project < ActiveRecord::Base
   has_and_belongs_to_many :categories
   belongs_to :user # project owner
 
+
   validates :title, :description, :goal, :start_date, :end_date, :user_id, presence: true
   validates :goal, numericality: {greater_than: 0}
   validate :start_date_cannot_be_in_the_past
@@ -21,4 +22,5 @@ class Project < ActiveRecord::Base
       errors.add(:end_date, "can't be before start date")
     end
   end
+
 end

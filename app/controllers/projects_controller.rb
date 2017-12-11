@@ -23,6 +23,7 @@ class ProjectsController < ApplicationController
     @project.start_date = params[:project][:start_date]
     @project.end_date = params[:project][:end_date]
     @project.image = params[:project][:image]
+    @project.user = current_user
 
     @project.user = current_user
     categories = params[:project][:category_ids]
