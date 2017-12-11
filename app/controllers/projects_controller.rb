@@ -23,6 +23,7 @@ class ProjectsController < ApplicationController
     @project.start_date = params[:project][:start_date]
     @project.end_date = params[:project][:end_date]
     @project.image = params[:project][:image]
+
     @project.user = current_user
     categories = params[:project][:category_ids]
     categories.delete("")
@@ -30,6 +31,9 @@ class ProjectsController < ApplicationController
     categories.each do |id|
       @project.categories << Category.find_by(id: id.to_i)
     end
+
+
+
 
 
     if @project.save
