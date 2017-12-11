@@ -10,11 +10,8 @@
   </div>
 
   <div>
-    <%= f.label :category %>
-    <% Category.all.each do |cat|  %>
-      <%= f.label cat.name %>
-      <%= f.check_box :category_ids%>
-    <% end %>
+    <%= f.label :category %><br>
+    <%= f.collection_check_boxes :category_ids, Category.all, :id, :name%>
   </div>
 
   <div>
@@ -23,7 +20,7 @@
   </div>
 
   <div>
-    <%= f.label :image %>
+    <%= f.label :image %><br>
     <%= f.text_field :image %>
   </div>
 
