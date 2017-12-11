@@ -10,6 +10,14 @@
   </div>
 
   <div>
+    <%= f.label :category %>
+    <% Category.all.each do |cat|  %>
+      <%= f.label cat.name %>
+      <%= f.check_box :category_ids%>
+    <% end %>
+  </div>
+
+  <div>
     <%= f.label :goal %>
     <%= f.number_field :goal %>
   </div>
