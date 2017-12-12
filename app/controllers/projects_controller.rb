@@ -25,11 +25,26 @@ class ProjectsController < ApplicationController
     @project.image = params[:project][:image]
     @project.user = current_user
 
+    @project.user = current_user
+    categories = params[:project][:category_ids]
+    categories.delete("")
+    
+    categories.each do |id|
+      @project.categories << Category.find_by(id: id.to_i)
+    end
+
+
+
+
+
     if @project.save
       redirect_to projects_url
     else
       render :new
     end
-   end
+
+
+end
+
 
 end
