@@ -1,13 +1,14 @@
-<h1> <%= current_user.first_name %>'s page </h1>
+
+<h1> <%= @user.full_name %>'s page </h1>
 
 <h3> Projects funded </h3>
-<% @user.projects_supported(@user).each do |project_id| %>
+<% @user.projects_supported.each do |project_id| %>
     <p><%= Project.find(project_id).title%></p>
   <% end %>
 
 <h3> Total funding provided </h3>
 
-<p> You have contributed $<%= @user.pledge_total(@user) %> towards Crowdfunder projects so far. </p>
+<p> You have contributed $<%= @user.pledge_total %> towards Crowdfunder projects so far. </p>
 
 <h3>Own Projects</h3>
 <% @projects.each do |project|%>

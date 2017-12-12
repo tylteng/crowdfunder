@@ -7,22 +7,27 @@ class User < ActiveRecord::Base
 
   validates :email, uniqueness: true
 
-  def pledge_total(user)
+  def full_name
+    return self.first_name + " " + self.last_name
+  end
+
+
+  def pledge_total
     @pledges = Pledge.all
     pledge_total = 0
     @pledges.each do |pledge|
-      if pledge.user_id == user.id
+      if pledge.user_id == self.id
         pledge_total = pledge_total + pledge.dollar_amount
       end
     end
     return pledge_total
   end
 
-  def projects_supported(user)
+  def projects_supported
     @pledges = Pledge.all
     project_list = []
     @pledges.each do |pledge|
-        if pledge.user_id == user.id
+        if pledge.user_id == self.id
           project_list << pledge.project_id
         end
     end
