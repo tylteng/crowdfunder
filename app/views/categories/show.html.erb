@@ -1,0 +1,12 @@
+<h1> <%=@category.name%> Category Page <h1>
+
+<p> Projects that fall under this category include: </p>
+
+<% @projects.each do |project| %>
+<% project.categories.each do |category|%>
+    <% if category.id == @category.id %>
+      <%= link_to(project.title, project_path(project.id)) %>
+      <br>
+    <% end %>
+  <%end  %>
+<%end %>
