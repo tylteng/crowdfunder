@@ -23,4 +23,8 @@ class Project < ActiveRecord::Base
     end
   end
 
+  def self.search(search)
+    where("title || description LIKE ?", "%#{search}%")
+  end
+
 end
