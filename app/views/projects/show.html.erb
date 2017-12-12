@@ -9,6 +9,9 @@
 
 <p> Raised so far: $<%=number_with_precision(@project.pledges.sum(:dollar_amount), :precision => 2)  %> </p>
 
+<% user_pledge_total=Pledge.where(["user_id = ? and project_id = ?", current_user, @project.id]) .sum(:dollar_amount) %>
+
+
 <p>Fundraising starts: <%= @project.start_date.strftime("%A %b %d %Y") %></p>
 
 <p>Deadline: <%= @project.end_date.strftime("%A %b %d %Y") %></p>
@@ -17,6 +20,12 @@
   <%= icon('clock-o') %>
   <%= "#{time_ago_in_words(@project.end_date)} #{( @project.end_date > Time.now.utc ) ? 'remaining' : 'past deadline'}" %>
 </time>
+
+<% if user_pledge_total > 0 %>
+  <p>You have donated $<%= user_pledge_total %> to this campaign! Thanks for your support.</p>
+<% else %>
+ <p>You have not yet contributed to this campaign. Would you like to make a pledge?</p>
+<% end  %>
 
 <%= form_for [@project, Pledge.new] do |f| %>
   <%= f.number_field :dollar_amount, value: @project.rewards.minimum(:dollar_amount), step: 0.01 %>

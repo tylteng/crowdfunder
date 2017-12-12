@@ -17,4 +17,16 @@ class UsersController < ApplicationController
       render 'new'
     end
   end
+
+def show
+  @projects = Project.all
+  @pledges = Pledge.all
+  @user = current_user
+end
+
+
+
+
+
+
 end

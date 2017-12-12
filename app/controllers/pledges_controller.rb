@@ -15,5 +15,8 @@ class PledgesController < ApplicationController
       render 'projects/show'
     end
   end
-  
+
+
+
+
 end
