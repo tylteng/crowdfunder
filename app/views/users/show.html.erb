@@ -2,8 +2,8 @@
 <h1> <%= @user.full_name %>'s page </h1>
 
 <h3> Projects funded </h3>
-<% @user.projects_supported.each do |project_id| %>
-    <p><%= Project.find(project_id).title%></p>
+<% @user.projects_supported.each do |project_id, dollar_amount| %>
+    <p>You have contributed $<%= dollar_amount %> to <%= link_to(Project.find(project_id).title, project_path(project_id))%>. </p>
   <% end %>
 
 <h3> Total funding provided </h3>
@@ -13,6 +13,6 @@
 <h3>Own Projects</h3>
 <% @projects.each do |project|%>
   <%  if project.user_id == current_user.id %>
-        <p> Your <%= project.title  %> project aims to raise $<%= project.goal %> by <%= project.end_date.strftime("%e %B %Y at %l:%M %p") %> </p>
+        <p> Your <%= link_to(project.title, project_path(project.id))  %> project aims to raise $<%= project.goal %> by <%= project.end_date.strftime("%e %B %Y at %l:%M %p") %> </p>
   <% end %>
 <% end  %>

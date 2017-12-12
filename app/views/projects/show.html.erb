@@ -5,6 +5,12 @@
 <% end %>
 
 <p><%= @project.description %></p>
+
+<% @project.categories.each do |category| %>
+  <%= link_to(category.name, category_path(category.id)) %>
+<%end%>
+
+
 <p>Goal: <%= number_to_currency(@project.goal) %></p>
 
 <p> Raised so far: $<%=number_with_precision(@project.pledges.sum(:dollar_amount), :precision => 2)  %> </p>

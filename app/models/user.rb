@@ -25,10 +25,14 @@ class User < ActiveRecord::Base
 
   def projects_supported
     @pledges = Pledge.all
-    project_list = []
+    project_list = {}
     @pledges.each do |pledge|
         if pledge.user_id == self.id
-          project_list << pledge.project_id
+          if project_list.has_key?(pledge.project_id)
+            project_list[pledge.project_id] += pledge.dollar_amount
+          else
+          project_list[pledge.project_id] = pledge.dollar_amount
+          end 
         end
     end
     project_list = project_list.uniq.sort
