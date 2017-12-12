@@ -1,14 +1,19 @@
 class UserSessionsController < ApplicationController
   def new
+
   end
 
   def create
     user = User.find_by(email: params[:email])
     if user && user.authenticate(params[:password])
       session[:user_id] = user.id
-      redirect_to projects_url, notice: "Logged in!"
+      redirect_to projects_url, notice: "Logged in successfully!!"
+    elsif !user
+      flash.alert = "Incorrect Email. Please try again."
+      redirect_to login_path
     else
-      render "new"
+      flash.alert = "Incorrect password. Please try again."
+      redirect_to login_path
     end
   end
 
