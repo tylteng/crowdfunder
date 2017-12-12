@@ -4,6 +4,12 @@ class ProjectsController < ApplicationController
   def index
     @projects = Project.all
     @projects = @projects.order(:end_date)
+    
+    if params[:search]
+     @searchedprojects = Project.search(params[:search]).order(:end_date)
+    else
+     @searchedprojects = Project.all.order(:end_date)
+    end
   end
 
   def show
@@ -28,7 +34,7 @@ class ProjectsController < ApplicationController
     @project.user = current_user
     categories = params[:project][:category_ids]
     categories.delete("")
-    
+
     categories.each do |id|
       @project.categories << Category.find_by(id: id.to_i)
     end
