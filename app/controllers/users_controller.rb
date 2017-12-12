@@ -21,9 +21,7 @@ class UsersController < ApplicationController
 def show
   @projects = Project.all
   @pledges = Pledge.all
-  # @user = User.find(params[:id])
-  @user = current_user
-  puts @user.first_name
+  @user = User.find(params[:id])
 end
 
 
