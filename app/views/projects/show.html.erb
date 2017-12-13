@@ -51,7 +51,7 @@
       <p>You have not yet contributed to this campaign. Would you like to make a pledge?</p>
     <%end %>
     <%= form_for [@project, Pledge.new] do |f| %>
-      <%= f.number_field :dollar_amount, value: @project.rewards.minimum(:dollar_amount), step: 0.01 %>
+      <%= f.number_field :dollar_amount, value: @project.rewards.minimum(:dollar_amount), step: 0.01, placeholder: "1.00" %>
       <%= f.submit "Pledge" %>
     <% end %>
   <% end %>
@@ -71,7 +71,36 @@
 
 <%= link_to "Add new reward", new_project_reward_path(@project) %>
 
+
+<h2>Comments</h2>
+  <% if @project.pledges.pluck(:user_id).include?(current_user.id) || @project.user_id == current_user.id %>
+    <%= form_for [@project, Comment.new] do |f| %>
+    <%= f.text_area :comment %><br>
+    <%= f.submit "Comment" %>
+    <% end %>
+  <% else %>
+    <%= "You have not yet pledged for this project." %>
+  <% end %>
+
+
+<% @project.comments.order(created_at: :desc) %>
+<% @project.comments.order(created_at: :desc).each do |comment| %>
+    <p><%= comment.user.full_name %> posted at <%=comment.created_at.strftime("%l:%M %p on %e %B %Y") %>  </p>
+  <p><%= comment.comment %></p>
+
+  <p>
+    <small>
+      <% if comment.user == current_user %>
+      <%= link_to "Remove comment", project_update_path(@project, comment), method: 'delete' %>
+      <% end %>
+    </small>
+  </p>
+
+<% end %>
+
+
 <h2>Updates</h2>
+
 <%@project.updates.order(created_at: :desc) %>
 <% @project.updates.order(created_at: :desc).each do |update| %>
     <p><%=@project.user.full_name %> posted at <%=update.created_at.strftime("%l:%M %p on %e %B %Y") %>  </p>
@@ -84,4 +113,7 @@
       <% end %>
     </small>
   </p>
+
+
+
 <% end %>
