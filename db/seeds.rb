@@ -10,19 +10,20 @@ Category.create!(name: "Film")
 
 
 10.times do
-  project = Project.create!(
+  project = Project.new(
               title: Faker::App.name,
               description: Faker::Lorem.paragraph,
               goal: rand(100000),
               start_date: Time.now.utc - rand(60).days,
               end_date: Time.now.utc + rand(10).days
             )
-
+  project.save!(validate: false)
   5.times do
-    project.rewards.create!(
+    project.rewards.new(
       description: Faker::Superhero.power,
       dollar_amount: rand(100),
     )
+    .save(validate: false)
   end
 end
 
