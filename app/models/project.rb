@@ -28,4 +28,5 @@ class Project < ActiveRecord::Base
     where("lower(title) || lower(description) LIKE ?", "%#{search.downcase}%")
   end
 
+
 end
