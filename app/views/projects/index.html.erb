@@ -2,13 +2,12 @@
 
 <%= link_to "New Project", new_project_path %>
 
-<%= form_tag(projects_path, :method => "get", id: "search-form") do %>
-<%= text_field_tag :search, params[:search], placeholder: "Search Projects" %>
-<%= submit_tag "Search" %>
+<% if @projects.present? %>
+<%= render '/projects/projects' %>
+<% else %>
+<p>There are no projects containing the term(s) <%= params[:search] %>.</p>
 <% end %>
 
-<% if @projects.present? %>
-  <%= render 'projects' %>
-<% else %>
-  <p>There are no projects containing the term(s) <%= params[:search] %>.</p>
+<% flash.each do |key, message| %>
+<div class="flash-<%= key %>"><%= message %></div>
 <% end %>
