@@ -24,7 +24,7 @@ class Project < ActiveRecord::Base
   end
 
   def self.search(search)
-    where("title || description LIKE ?", "%#{search}%")
+    where("lower(title) || lower(description) LIKE ?", "%#{search.downcase}%")
   end
 
 end
