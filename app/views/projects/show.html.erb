@@ -28,11 +28,22 @@
   <%= "#{time_ago_in_words(@project.end_date)} #{( @project.end_date > Time.now.utc ) ? 'remaining' : 'past deadline'}" %>
 </time>
 
-<% if @project.user_id == current_user.id %>
+<% if current_user == @project.user  %>
   <h2> Pledges received </h2>
-  <%@project.pledges.each do |pledge| %>
-    <p><%= pledge.user.full_name %> has donated  $<%= pledge.user.projects_supported[@project.id] %></p>
-  <%end %>
+    <%if @project.pledges.count == 0 %>
+        <p> No pledges so far. </p>
+    <% else %>
+      <%@project.pledges.each do |pledge| %>
+        <p><%= pledge.user.full_name %> has donated  $<%= pledge.user.projects_supported[@project.id] %></p>
+      <%end %>
+    <%end  %>
+  <h2> Post Updates </h2>
+    <%= form_for [@project, Update.new] do |f| %>
+      <%= f.text_area :description %>
+      <%= f.submit "Update" %>
+    <% end %>
+<% elsif current_user == nil%>
+    <p>You have not yet contributed to this campaign. Please <%= link_to "sign in", :login %> to make a pledge.</p>
 <% else %>
     <% if current_user.projects_supported.has_key?(@project.id) %>
       <p>You have donated $<%= current_user.projects_supported[@project.id] %> to this campaign! Thanks for your support.</p>
@@ -44,7 +55,6 @@
       <%= f.submit "Pledge" %>
     <% end %>
   <% end %>
-
 
 
 <h2>Rewards</h2>
@@ -60,3 +70,18 @@
 <% end %>
 
 <%= link_to "Add new reward", new_project_reward_path(@project) %>
+
+<h2>Updates</h2>
+<%@project.updates.order(created_at: :desc) %>
+<% @project.updates.order(created_at: :desc).each do |update| %>
+    <p><%=@project.user.full_name %> posted at <%=update.created_at.strftime("%l:%M %p on %e %B %Y") %>  </p>
+  <p><%= update.description %></p>
+
+  <p>
+    <small>
+      <% if @project.user == current_user %>
+      <%= link_to "Remove update", project_update_path(@project, update), method: 'delete' %>
+      <% end %>
+    </small>
+  </p>
+<% end %>
