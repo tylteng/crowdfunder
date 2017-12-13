@@ -51,7 +51,7 @@
       <p>You have not yet contributed to this campaign. Would you like to make a pledge?</p>
     <%end %>
     <%= form_for [@project, Pledge.new] do |f| %>
-      <%= f.number_field :dollar_amount, value: @project.rewards.minimum(:dollar_amount), step: 0.01 %>
+      <%= f.number_field :dollar_amount, value: @project.rewards.minimum(:dollar_amount), step: 0.01, placeholder: "1.00" %>
       <%= f.submit "Pledge" %>
     <% end %>
   <% end %>
