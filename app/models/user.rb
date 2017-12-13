@@ -32,10 +32,9 @@ class User < ActiveRecord::Base
             project_list[pledge.project_id] += pledge.dollar_amount
           else
           project_list[pledge.project_id] = pledge.dollar_amount
-          end 
+          end
         end
     end
-    project_list = project_list.uniq.sort
     return project_list
   end
 end
