@@ -9,6 +9,23 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def about
+    @projects = Project.all
+    @projects_number = @projects.count
+    @projects_funded = 0
+    @successful_projects = 0
+    @successful_projects_funding = 0
+    @projects.each do |project|
+      if project.pledges.count > 0
+        @projects_funded +=1
+      end
+      if project.pledges.sum(:dollar_amount)>=project.goal
+          @successful_projects +=1
+          @successful_projects_funding += project.pledges.sum(:dollar_amount)
+      end
+    end
+  end
+
   def show
     @project = Project.find(params[:id])
   end
