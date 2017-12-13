@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get 'login' => 'user_sessions#new', :as => :login
   delete 'logout' => 'user_sessions#destroy', :as => :logout
   get '/about' => 'projects#about', :as => :about
+  get '/claim/:id' => 'rewards#claim', :as => :claim
 
   resources :projects, only: [:index, :new, :create, :show] do
     resources :pledges, only: [:create]

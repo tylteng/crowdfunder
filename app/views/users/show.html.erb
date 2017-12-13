@@ -6,13 +6,28 @@
     <p>You have contributed $<%= dollar_amount %> to <%= link_to(Project.find(project_id).title, project_path(project_id))%>. </p>
   <% end %>
 
+<h3> Rewards list </h3>
+
+<%@user.pledges.each do |pledge| %>
+    <%pledge.pledge_rewards.each do |reward| %>
+      <p>You can claim <%= reward.description %> for $<%= reward.dollar_amount %></p>
+      <%= link_to("Claim", claim_path(reward.id)) %>
+    <%end  %>
+<% end  %>
+
+<h3> Rewards claimed </h3>
+
+<%@user.rewards.each do |reward| %>
+  <p> You have claimed <%= reward.description %>. </p>
+<%end %>
+
 <h3> Total funding provided </h3>
 
 <p> You have contributed $<%= @user.pledge_total %> towards Crowdfunder projects so far. </p>
 
 <h3>Own Projects</h3>
 <% @projects.each do |project|%>
-  <%  if project.user_id == current_user.id %>
+  <%  if project.user_id == @user.id %>
         <p> Your <%= link_to(project.title, project_path(project.id))  %> project aims to raise $<%= project.goal %> by <%= project.end_date.strftime("%e %B %Y at %l:%M %p") %> </p>
   <% end %>
 <% end  %>

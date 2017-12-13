@@ -1,5 +1,5 @@
 class RewardsController < ApplicationController
-  before_action :load_project
+  before_action :load_project, except: :claim
 
   def new
     @reward = Reward.new
@@ -15,6 +15,13 @@ class RewardsController < ApplicationController
     else
       render :new
     end
+  end
+
+  def claim
+    @reward = Reward.find(params[:id])
+    @reward.limit -= 1
+    @reward.users << current_user
+    redirect_to user_path(current_user.id)
   end
 
   def destroy
