@@ -14,6 +14,7 @@ class Pledge < ApplicationRecord
     end
   end
 
+#returns an array of all the rewards you can get with this pledge
 def pledge_rewards
   pledge_rewards = []
   @project=Project.find(project_id)
