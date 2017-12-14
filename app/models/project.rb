@@ -29,5 +29,14 @@ class Project < ActiveRecord::Base
     where("lower(title) || lower(description) LIKE ?", "%#{search.downcase}%")
   end
 
+  def rewards_claimed
+    rewards_claimed = Hash.new(0)
+    self.rewards.each do |reward|
+      if reward.users
+        reward.users.map {rewards_claimed[reward.description] +=1}
+      end
+    end
+    return rewards_claimed
+  end
 
 end

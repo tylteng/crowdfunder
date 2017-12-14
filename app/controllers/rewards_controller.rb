@@ -8,6 +8,7 @@ class RewardsController < ApplicationController
   def create
     @reward = @project.rewards.build
     @reward.dollar_amount = params[:reward][:dollar_amount]
+    @reward.limit = params[:reward][:limit]
     @reward.description = params[:reward][:description]
 
     if @reward.save

@@ -88,6 +88,13 @@
 
 <%= link_to "Add new reward", new_project_reward_path(@project) %>
 
+<% if current_user && current_user == @project.user %>
+  <h2> Rewards Claimed </h2>
+  <% @project.rewards_claimed.each do |reward, frequency| %>
+    <%=reward%> x <%= frequency %> </p>
+  <%end %>
+  <%end %>
+
 
 <h2>Comments</h2>
   <%if current_user %>
