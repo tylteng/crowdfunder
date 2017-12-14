@@ -4,11 +4,11 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :rewards
   has_many :pledges
 
-  # validates :password, length: { minimum: 8 }, on: :create
-  # validates :password, confirmation: true, on: :create
-  # validates :password_confirmation, presence: true, on: :create
-  #
-  # validates :email, uniqueness: true
+  validates :password, length: { minimum: 8 }, on: :create
+  validates :password, confirmation: true, on: :create
+  validates :password_confirmation, presence: true, on: :create
+
+  validates :email, uniqueness: true
 
   def full_name
     return self.first_name + " " + self.last_name

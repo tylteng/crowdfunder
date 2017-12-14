@@ -8,10 +8,10 @@ class Project < ActiveRecord::Base
   belongs_to :user # project owner
 
 
-  # validates :title, :description, :goal, :start_date, :end_date, :user_id, presence: true
-  # validates :goal, numericality: {greater_than: 0}
-  # validate :start_date_cannot_be_in_the_past
-  # validate :end_date_cannot_be_before_start_date
+  validates :title, :description, :goal, :start_date, :end_date, :user_id, presence: true
+  validates :goal, numericality: {greater_than: 0}
+  validate :start_date_cannot_be_in_the_past
+  validate :end_date_cannot_be_before_start_date
 
   def start_date_cannot_be_in_the_past
     if start_date.present? && start_date < Date.today
