@@ -19,10 +19,17 @@ class RewardsController < ApplicationController
 
   def claim
     @reward = Reward.find(params[:id])
-    @reward.limit -= 1
-    @reward.users << current_user
-    redirect_to user_path(current_user.id)
+    if @reward.limit > 0
+      @reward.limit -=1
+      @reward.users << current_user
+      @reward.save
+      puts @reward.inspect
+        redirect_to user_path(current_user.id), notice: 'Reward claimed!'
+    else
+      redirect_to user_path(current_user.id), notice: 'Reward sold out.'
+    end
   end
+
 
   def destroy
     @reward = Reward.find(params[:id])

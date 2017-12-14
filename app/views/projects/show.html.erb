@@ -56,6 +56,21 @@
     <% end %>
   <% end %>
 
+  <h2>Updates</h2>
+
+  <% @project.updates.order(created_at: :desc).each do |update| %>
+      <p><%=@project.user.full_name %> posted at <%=update.created_at.strftime("%l:%M %p on %e %B %Y") %>  </p>
+    <p><%= update.description %></p>
+
+    <p>
+      <small>
+        <% if @project.user == current_user %>
+        <%= link_to "Remove update", project_update_path(@project, update), method: 'delete' %>
+        <% end %>
+      </small>
+    </p>
+
+  <% end %>
 
 <h2>Rewards</h2>
 <% @project.rewards.each do |reward| %>
@@ -73,14 +88,14 @@
 
 
 <h2>Comments</h2>
+  <%if current_user %>
   <% if @project.pledges.pluck(:user_id).include?(current_user.id) || @project.user_id == current_user.id %>
     <%= form_for [@project, Comment.new] do |f| %>
     <%= f.text_area :comment %><br>
     <%= f.submit "Comment" %>
     <% end %>
-  <% else %>
-    <%= "You have not yet pledged for this project." %>
   <% end %>
+  <%end %>
 
 
 <% @project.comments.order(created_at: :desc) %>
@@ -95,25 +110,5 @@
       <% end %>
     </small>
   </p>
-
-<% end %>
-
-
-<h2>Updates</h2>
-
-<%@project.updates.order(created_at: :desc) %>
-<% @project.updates.order(created_at: :desc).each do |update| %>
-    <p><%=@project.user.full_name %> posted at <%=update.created_at.strftime("%l:%M %p on %e %B %Y") %>  </p>
-  <p><%= update.description %></p>
-
-  <p>
-    <small>
-      <% if @project.user == current_user %>
-      <%= link_to "Remove update", project_update_path(@project, update), method: 'delete' %>
-      <% end %>
-    </small>
-  </p>
-
-
 
 <% end %>

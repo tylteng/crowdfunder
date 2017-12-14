@@ -7,6 +7,8 @@ Category.destroy_all
 Category.create!(name: "Music")
 Category.create!(name: "Art")
 Category.create!(name: "Film")
+Category.create!(name: "Health")
+Category.create!(name: "Tech")
 
 
 10.times do
@@ -44,4 +46,9 @@ end
     project: project,
     dollar_amount: project.rewards.sample.dollar_amount + rand(10)
   )
+
+
+
+
+
 end
