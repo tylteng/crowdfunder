@@ -18,7 +18,6 @@
           <p><%= reward.description %> x <%= (@user.project_pledge_remaining[reward.project_id]/reward.dollar_amount).to_i%>.</p>
                   <%= link_to("Claim", claim_path(reward.id)) %>
           <%end %>
-
       <% end %>
     <%end  %>
 <% end  %>
