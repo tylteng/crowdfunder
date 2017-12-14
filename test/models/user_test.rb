@@ -21,4 +21,25 @@ class UserTest < ActiveSupport::TestCase
     user = User.new(email: "bettymaker@gmail.com", password: "1234", password_confirmation: "1234")
     refute user.valid?
   end
+
+  test "full_name" do
+    user = create(:user)
+    assert_equal("Ty Dollar", user.full_name)
+  end
+
+  test "user_has_a_password" do
+    user = build(:user, password: nil, password_confirmation: nil)
+    # user = (user.passwor_confirmation = nil)
+    assert user.invalid?
+  end
+
+  test "pledge_total" do
+    user = build(:user)
+    pledge1 = create(:pledge, user: user, dollar_amount: 100)
+    dollar = user.pledge_total
+    assert_equal(100, dollar)
+  end
+
+
+
 end

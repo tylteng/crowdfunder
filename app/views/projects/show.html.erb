@@ -73,7 +73,7 @@
   <% end %>
 
 <h2>Rewards</h2>
-<% @project.rewards.each do |reward| %>
+<% @project.rewards.order(dollar_amount: :asc).each do |reward| %>
   <% if reward.limit>0 %>
   <p><%= number_to_currency(reward.dollar_amount) %></p>
   <p><%= reward.description %> x <%= reward.limit %></p>
