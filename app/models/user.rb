@@ -42,7 +42,6 @@ class User < ActiveRecord::Base
     end
     return project_list
   end
-
 # returns a hash with reward selected description as the key and the number selected as value
 def rewards_selected
   rewards_selected = Hash.new(0)
