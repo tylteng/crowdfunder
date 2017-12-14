@@ -43,3 +43,12 @@ group :test do
   gem 'guard', '~> 2.14.0'
   gem 'guard-minitest'
 end
+
+group :development, :test do
+  gem "factory_bot_rails"
+  gem 'faker'
+end
+
+# config.generators do |g|
+#   g.factory_bot false
+# end

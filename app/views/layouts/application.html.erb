@@ -19,6 +19,7 @@
       <nav class="site-nav">
           <%= link_to("Home", root_path) %>
           <%= link_to("Categories", categories_path) %>
+          <%= link_to("About", about_path) %>
         <% if current_user %>
           <%= link_to(current_user.full_name, user_path(current_user)) %>
           <%= link_to "New Project", new_project_path %>
