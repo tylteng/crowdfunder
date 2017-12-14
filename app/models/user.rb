@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
     return self.first_name + " " + self.last_name
   end
 
-
+# returns the total amount a given user has pledged
   def pledge_total
     @pledges = Pledge.all
     pledge_total = 0
@@ -26,6 +26,8 @@ class User < ActiveRecord::Base
     return pledge_total
   end
 
+
+#returns a hash with project_id as key and total pledge amount as value
   def projects_supported
     @pledges = Pledge.all
     project_list = {}
@@ -41,6 +43,7 @@ class User < ActiveRecord::Base
     return project_list
   end
 
+# returns a hash with reward selected description as the key and the number selected as value
 def rewards_selected
   rewards_selected = Hash.new(0)
   self.rewards.each do |reward|
@@ -48,6 +51,31 @@ def rewards_selected
   end
   return rewards_selected
 end
+
+
+#returns a hash with project_id as key and total selected reward value as value
+def claimed_rewards_by_project
+  claimed_rewards_by_project = Hash.new(0)
+  self.rewards_selected.each do |reward, frequency|
+    selected_reward = Reward.find_by(description: reward)
+    claimed_rewards_by_project[selected_reward.project_id] += selected_reward.dollar_amount
+  end
+  return claimed_rewards_by_project
+end
+
+#returns a hash with project id as key and pledge balance remaining as value
+def project_pledge_remaining
+  project_pledge_remaining = Hash.new(0)
+  self.projects_supported.each do |project_id, total_pledge_amount|
+    project_pledge_remaining[project_id] = total_pledge_amount
+  end
+  self.claimed_rewards_by_project.each do |project_id, total_reward_amount|
+    project_pledge_remaining[project_id] -= total_reward_amount
+  end
+  return project_pledge_remaining
+end
+
+
 
 
 end

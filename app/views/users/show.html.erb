@@ -10,9 +10,15 @@
 
 <%@user.pledges.each do |pledge| %>
     <%pledge.pledge_rewards.each do |reward| %>
-      <%if reward.limit > 0 %>
-        <p><%= reward.description %> x <%= reward.limit %>.</p>
-        <%= link_to("Claim", claim_path(reward.id)) %>
+      <%if reward.limit > 0 && (@user.project_pledge_remaining[reward.project_id]/reward.dollar_amount).to_i > 0 %>
+        <%if reward.limit < (@user.project_pledge_remaining[reward.project_id]/reward.dollar_amount).to_i  %>
+          <p><%= reward.description %> x <%= reward.limit %>.</p>
+                  <%= link_to("Claim", claim_path(reward.id)) %>
+        <% else %>
+          <p><%= reward.description %> x <%= (@user.project_pledge_remaining[reward.project_id]/reward.dollar_amount).to_i%>.</p>
+                  <%= link_to("Claim", claim_path(reward.id)) %>
+          <%end %>
+
       <% end %>
     <%end  %>
 <% end  %>

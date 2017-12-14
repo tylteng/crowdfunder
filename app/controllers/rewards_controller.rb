@@ -20,12 +20,19 @@ class RewardsController < ApplicationController
 
   def claim
     @reward = Reward.find(params[:id])
+    @project_pledge_remaining = current_user.project_pledge_remaining[@reward.project_id]
+    puts @project_pledge_remaining
+    puts @reward.dollar_amount
     if @reward.limit > 0
-      @reward.limit -=1
-      @reward.users << current_user
-      @reward.save
-      puts @reward.inspect
-        redirect_to user_path(current_user.id), notice: 'Reward claimed!'
+      if @reward.dollar_amount <= @project_pledge_remaining
+        @reward.limit -= 1
+        @reward.users << current_user
+        @reward.save
+        puts @reward.inspect
+          redirect_to user_path(current_user.id), notice: 'Reward claimed!'
+      else
+        redirect_to user_path(current_user.id), notice: 'Unable to claim reward. Pledge amount insufficient.'
+      end
     else
       redirect_to user_path(current_user.id), notice: 'Reward sold out.'
     end
