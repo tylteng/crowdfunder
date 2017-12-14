@@ -1,5 +1,7 @@
 class Reward < ActiveRecord::Base
   belongs_to :project
-  validates :description, presence: true
-  validates :dollar_amount, presence: true
+  has_and_belongs_to_many :users
+
+  # validates :description, presence: true
+  # validates :dollar_amount, presence: true
 end

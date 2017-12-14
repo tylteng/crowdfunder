@@ -2,15 +2,16 @@ class Project < ActiveRecord::Base
   has_many :rewards
   has_many :pledges
   has_many :updates
+  has_many :comments
   has_many :users, through: :pledges # backers
   has_and_belongs_to_many :categories
   belongs_to :user # project owner
 
 
-  validates :title, :description, :goal, :start_date, :end_date, :user_id, presence: true
-  validates :goal, numericality: {greater_than: 0}
-  validate :start_date_cannot_be_in_the_past
-  validate :end_date_cannot_be_before_start_date
+  # validates :title, :description, :goal, :start_date, :end_date, :user_id, presence: true
+  # validates :goal, numericality: {greater_than: 0}
+  # validate :start_date_cannot_be_in_the_past
+  # validate :end_date_cannot_be_before_start_date
 
   def start_date_cannot_be_in_the_past
     if start_date.present? && start_date < Date.today
@@ -28,5 +29,14 @@ class Project < ActiveRecord::Base
     where("lower(title) || lower(description) LIKE ?", "%#{search.downcase}%")
   end
 
+  def rewards_claimed
+    rewards_claimed = Hash.new(0)
+    self.rewards.each do |reward|
+      if reward.users
+        reward.users.map {rewards_claimed[reward.description] +=1}
+      end
+    end
+    return rewards_claimed
+  end
 
 end

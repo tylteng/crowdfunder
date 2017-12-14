@@ -51,37 +51,73 @@
       <p>You have not yet contributed to this campaign. Would you like to make a pledge?</p>
     <%end %>
     <%= form_for [@project, Pledge.new] do |f| %>
-      <%= f.number_field :dollar_amount, value: @project.rewards.minimum(:dollar_amount), step: 0.01 %>
+      <%= f.number_field :dollar_amount, value: @project.rewards.minimum(:dollar_amount), step: 0.01, placeholder: "1.00" %>
       <%= f.submit "Pledge" %>
     <% end %>
   <% end %>
 
+  <h2>Updates</h2>
+
+  <% @project.updates.order(created_at: :desc).each do |update| %>
+      <p><%=@project.user.full_name %> posted at <%=update.created_at.strftime("%l:%M %p on %e %B %Y") %>  </p>
+    <p><%= update.description %></p>
+
+    <p>
+      <small>
+        <% if @project.user == current_user %>
+        <%= link_to "Remove update", project_update_path(@project, update), method: 'delete' %>
+        <% end %>
+      </small>
+    </p>
+
+  <% end %>
 
 <h2>Rewards</h2>
 <% @project.rewards.each do |reward| %>
+  <% if reward.limit>0 %>
   <p><%= number_to_currency(reward.dollar_amount) %></p>
-  <p><%= reward.description %></p>
+  <p><%= reward.description %> x <%= reward.limit %></p>
 
   <p>
     <small>
       <%= link_to "Remove reward", project_reward_path(@project, reward), method: 'delete' %>
     </small>
   </p>
+  <%end %>
 <% end %>
 
 <%= link_to "Add new reward", new_project_reward_path(@project) %>
 
-<h2>Updates</h2>
-<%@project.updates.order(created_at: :desc) %>
-<% @project.updates.order(created_at: :desc).each do |update| %>
-    <p><%=@project.user.full_name %> posted at <%=update.created_at.strftime("%l:%M %p on %e %B %Y") %>  </p>
-  <p><%= update.description %></p>
+<% if current_user && current_user == @project.user %>
+  <h2> Rewards Claimed </h2>
+  <% @project.rewards_claimed.each do |reward, frequency| %>
+    <%=reward%> x <%= frequency %> </p>
+  <%end %>
+  <%end %>
+
+
+<h2>Comments</h2>
+  <%if current_user %>
+  <% if @project.pledges.pluck(:user_id).include?(current_user.id) || @project.user_id == current_user.id %>
+    <%= form_for [@project, Comment.new] do |f| %>
+    <%= f.text_area :comment %><br>
+    <%= f.submit "Comment" %>
+    <% end %>
+  <% end %>
+  <%end %>
+
+
+<% @project.comments.order(created_at: :desc) %>
+<% @project.comments.order(created_at: :desc).each do |comment| %>
+    <p><%= comment.user.full_name %> posted at <%=comment.created_at.strftime("%l:%M %p on %e %B %Y") %>  </p>
+  <p><%= comment.comment %></p>
 
   <p>
     <small>
-      <% if @project.user == current_user %>
-      <%= link_to "Remove update", project_update_path(@project, update), method: 'delete' %>
+      <% if comment.user == current_user %>
+      <%= link_to "Remove comment", project_update_path(@project, comment), method: 'delete' %>
       <% end %>
     </small>
   </p>
+
 <% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171213045133) do
+ActiveRecord::Schema.define(version: 20171213203120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,14 @@ ActiveRecord::Schema.define(version: 20171213045133) do
   create_table "categories_projects", force: :cascade do |t|
     t.integer "project_id", null: false
     t.integer "category_id", null: false
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.integer "project_id"
+    t.integer "user_id"
+    t.text "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "pledges", id: :serial, force: :cascade do |t|
@@ -54,6 +62,12 @@ ActiveRecord::Schema.define(version: 20171213045133) do
     t.float "dollar_amount"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer "limit", default: 5
+  end
+
+  create_table "rewards_users", force: :cascade do |t|
+    t.integer "reward_id", null: false
+    t.integer "user_id", null: false
   end
 
   create_table "updates", force: :cascade do |t|

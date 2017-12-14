@@ -4,11 +4,13 @@ Rails.application.routes.draw do
   get 'login' => 'user_sessions#new', :as => :login
   delete 'logout' => 'user_sessions#destroy', :as => :logout
   get '/about' => 'projects#about', :as => :about
+  get '/claim/:id' => 'rewards#claim', :as => :claim
 
   resources :projects, only: [:index, :new, :create, :show] do
     resources :pledges, only: [:create]
     resources :rewards, only: [:new, :create, :destroy]
     resources :updates, only: [:new, :create, :destroy]
+    resources :comments, only: [:new, :create, :destroy]
   end
   resources :users, only: [:new, :create, :show]
   resources :user_sessions, only: [:create]
