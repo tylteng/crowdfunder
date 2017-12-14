@@ -42,6 +42,22 @@ class User < ActiveRecord::Base
     end
     return project_list
   end
+
+  #returns an array of all the rewards this user can get
+  def user_pledge_rewards
+    user_pledge_rewards = []
+    self.project_pledge_remaining.each do |project_id, pledge_amount_remaining|
+      project = Project.find(project_id)
+      reward_list = project.rewards
+      reward_list.each do |reward|
+        if pledge_amount_remaining >= reward.dollar_amount
+          user_pledge_rewards << reward
+        end
+      end
+    end
+    return user_pledge_rewards
+  end
+
 # returns a hash with reward selected description as the key and the number selected as value
 def rewards_selected
   rewards_selected = Hash.new(0)
@@ -73,8 +89,5 @@ def project_pledge_remaining
   end
   return project_pledge_remaining
 end
-
-
-
 
 end
