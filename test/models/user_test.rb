@@ -40,6 +40,10 @@ class UserTest < ActiveSupport::TestCase
     assert_equal(100, dollar)
   end
 
+  test 'projects_supported' do
+    
+  end
+
 
 
 end

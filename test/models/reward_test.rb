@@ -47,4 +47,11 @@ class RewardTest < ActiveSupport::TestCase
     )
   end
 
+  test 'reward can be destroyed' do
+    reward = create(:reward)
+    reward.destroy
+    refute reward.persisted?
+  end
+
+
 end
