@@ -10,16 +10,18 @@
 
 <%@user.pledges.each do |pledge| %>
     <%pledge.pledge_rewards.each do |reward| %>
-      <p>You can claim <%= reward.description %> for $<%= reward.dollar_amount %></p>
-      <%= link_to("Claim", claim_path(reward.id)) %>
+      <%if reward.limit > 0 %>
+        <p><%= reward.description %> x <%= reward.limit %>.</p>
+        <%= link_to("Claim", claim_path(reward.id)) %>
+      <% end %>
     <%end  %>
 <% end  %>
 
 <h3> Rewards claimed </h3>
 
-<%@user.rewards.each do |reward| %>
-  <p> You have claimed <%= reward.description %>. </p>
-<%end %>
+<% @user.rewards_selected.each do |reward, frequency| %>
+  <p><%= reward %> x <%= frequency %></p>
+<% end %>
 
 <h3> Total funding provided </h3>
 

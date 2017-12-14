@@ -40,4 +40,14 @@ class User < ActiveRecord::Base
     end
     return project_list
   end
+
+def rewards_selected
+  rewards_selected = Hash.new(0)
+  self.rewards.each do |reward|
+    rewards_selected[reward.description]+= 1
+  end
+  return rewards_selected
+end
+
+
 end
